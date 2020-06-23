@@ -1,6 +1,6 @@
-const express=require('express');
+const express =require( 'express');
 const router=express.Router();
-const {Student,validate,update} =require('../models/student');
+const {Student,validate,update}= require('../models/student');
 
 
 router.route('/')
@@ -69,4 +69,4 @@ router.route('/:id')
         })
     });
 
-module.exports=router;
+module.exports= router;
