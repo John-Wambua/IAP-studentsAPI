@@ -37,7 +37,10 @@ exports.addStudent=catchAsync(async (req,res,next)=>{
 })
 exports.getSingleStudent=catchAsync(async (req,res,next)=>{
     const studentNumber=req.params.id;
-    if (studentNumber.length!=6) return next(new AppError(new Error('Invalid Student ID!'),400));
+    let isnum = /^\d+$/.test(studentNumber);
+
+    if (studentNumber.length!=6||!isnum) return next(new AppError(new Error('Invalid Student ID!'),400));
+
 
     const student= await Student.findOne({student_number:studentNumber});
     if (!student) return next(new AppError(new Error(`Student ${studentNumber} does not exist!`),404))
@@ -52,8 +55,9 @@ exports.getSingleStudent=catchAsync(async (req,res,next)=>{
 exports.updateStudent=catchAsync(async (req,res,next)=>{
 
     const studentNumber=req.params.id;
+    let isnum = /^\d+$/.test(studentNumber);
 
-    if (studentNumber.length!=6) return next(new AppError(new Error('Invalid Student ID!'),400));
+    if (studentNumber.length!=6||!isnum) return next(new AppError(new Error('Invalid Student ID!'),400));
 
     const filteredBody=filterObj(req.body,'name','course')
     const student=await Student.findOneAndUpdate({student_number:studentNumber},filteredBody,{new:true,runValidators:true})
@@ -68,8 +72,10 @@ exports.updateStudent=catchAsync(async (req,res,next)=>{
 exports.deleteStudent=catchAsync(async (req,res,next)=>{
 
     const studentNumber=req.params.id;
-    if (studentNumber.length!=6) return next(new AppError(new Error('Invalid Student ID!'),400));
-    const student=await Student.deleteOne({student_number:studentNumber})
+    let isnum = /^\d+$/.test(studentNumber);
+
+    if (studentNumber.length!=6||!isnum) return next(new AppError(new Error('Invalid Student ID!'),400));
+    const student=await Student.findOneAndDelete({student_number:studentNumber})
 
     if (!student) return next(new AppError(new Error(`Student ${studentNumber} does not exist!`),404))
     res.status(204).json({
