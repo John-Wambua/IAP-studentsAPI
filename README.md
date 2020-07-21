@@ -7,6 +7,8 @@ $ npm install
 
 # serve at localhost:3000
 $ npm start
+
+# setup MongoDB connection string in .env under MONGO_URI
 ```
 ## Api Endpoints
 ````bash
